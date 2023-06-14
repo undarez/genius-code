@@ -40,6 +40,7 @@ const Home = () => {
                 </head>
                 <body>
                   ${qrCodeSvg.outerHTML}
+                  <p>{selectedLocation?.name || text}</p>
                 </body>
               </html>
             `);
@@ -70,17 +71,23 @@ const Home = () => {
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    flex-direction:column;
                     width: 100%;
                     height: 100%;
                     margin: 0;
                     padding: 0;
                   }
+                  p {
+                        font-family: 'Handlee', cursive;
+                        color: black;
+                        font-size: 22px;
+                    }
                 </style>
               </head>
               <body>
               <div>
               ${qrCodeSvg!.outerHTML}
-                  
+              <p>${selectedLocation?.name || text}</p>
               </div>
               </body>
             </html>`);
@@ -249,6 +256,7 @@ const Home = () => {
                               level="Q"
                               includeMargin={false}
                         />
+                        <p>{selectedLocation?.name || text}</p>
                         {/*  Les 3 lignes qui suivent servent a afficher dans un <p> le code quand il n'est pas undefined, juste pour vérifier (au pire tu l'enlève si ça te plait pas :P )  */}
                         {selectedLocation !== undefined && (
                               <p>{selectedLocation.name}</p>
