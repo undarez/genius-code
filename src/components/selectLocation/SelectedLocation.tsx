@@ -14,6 +14,7 @@ const SelectedLocation = ({
       update: any;
 }) => {
       const [selectedLocation, setSelectedLocation] = useState<CR1Placement>();
+      
 
       const handleLocationSelection = (
             event: React.ChangeEvent<HTMLSelectElement>

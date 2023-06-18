@@ -1,11 +1,49 @@
 import React, { useState } from 'react';
+//importer la function d'impression de Zebra
+import { printOnZebraPrinter } from '../../function/zebra';
+//import de la liste des adresses IP des Zebra
+import ipZebra from '../../JSON/ZebraIP.json';
 import Barcode from 'react-barcode';
 import { QRCodeSVG } from 'qrcode.react';
-import SelectedLocation, { CR1Placement } from '../../components/selectLocation/SelectedLocation'
-import DataLocation from'../../JSON/Location.json'
+import SelectedLocation, {
+      CR1Placement,
+} from '../../components/selectLocation/SelectedLocation';
+import DataLocation from '../../JSON/Location.json';
 import './_home.scss';
 
 const Home = () => {
+      //useState pour le nombre de copies a imprimer sur une zebra
+      const [copiesZebra, setCopiesZebra] = useState('');
+      //ajout d'un map pour selectionner toutes les adresses IP des zebra
+      const IPZebra = ipZebra.map((printer: any) => (
+            <option key={printer.id} value={printer.ip}>
+                  {printer.name}
+            </option>
+      ));
+      //Zebra impression
+      const handlePrintZebra = async () => {
+            // Vérifier si une imprimante est sélectionnée
+            if (copiesZebra) {
+                  try {
+                        await printOnZebraPrinter(setCopiesZebra);
+
+                        // Autres actions après l'impression
+                  } catch (error) {
+                        console.log(
+                              "Erreur lors de l'impression sur l'imprimante Zebra :",
+                              error
+                        );
+                  }
+            }
+      };
+
+      const handlePrintCopieZebra = (
+            event: React.ChangeEvent<HTMLSelectElement>
+      ) => {
+            setCopiesZebra(event.target.value);
+      };
+      //fin impression zebra
+
       //function telechargement qrcode
       const handleDllQrcode = (
             e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -36,11 +74,16 @@ const Home = () => {
                       margin: 0;
                       padding: 0;
                     }
+                    p {
+                        font-family: 'Handlee', cursive;
+                        color: black;
+                        font-size: 22px;
+                    }
                   </style>
                 </head>
                 <body>
                   ${qrCodeSvg.outerHTML}
-                  <p>{selectedLocation?.name || text}</p>
+                  <p>${selectedLocation?.name || text}</p>
                 </body>
               </html>
             `);
@@ -48,7 +91,6 @@ const Home = () => {
             downloadLink.href = svgUrl;
             downloadLink.download = 'qrcode.svg';
             downloadLink.click();
-          
       };
 
       //function print qrcode
@@ -81,6 +123,7 @@ const Home = () => {
                         font-family: 'Handlee', cursive;
                         color: black;
                         font-size: 22px;
+                        text-align:center;
                     }
                 </style>
               </head>
@@ -127,10 +170,12 @@ const Home = () => {
                       margin: 0;
                       padding: 0;
                     }
+                  
                   </style>
                 </head>
                 <body>
                   ${barcodeSvg!.outerHTML}
+                  
                 </body>
               </html>
             `);
@@ -138,8 +183,6 @@ const Home = () => {
             downloadLink.href = svgUrl;
             downloadLink.download = 'barcode.svg';
             downloadLink.click();
-          
-            
       };
 
       //function print codebarre
@@ -165,12 +208,12 @@ const Home = () => {
                     margin: 0;
                     padding: 0;
                   }
+                 
                 </style>
               </head>
               <body>
               <div>
               ${barcodeSvg!.outerHTML}
-                  
               </div>
               </body>
             </html>`);
@@ -190,12 +233,29 @@ const Home = () => {
       const [colorState, setColorState] = useState('#000000');
       const [selectedLocation, setSelectedLocation] = useState<CR1Placement>();
 
-      
+      //ajout d'un map pour selectionner toutes les adresses IP des zebra
+
       return (
             <div className="container-qrcode" id="image-Qrcode">
                   <form action="" method="get" className="container-form">
-                  <SelectedLocation data={DataLocation} update={setSelectedLocation}
-                  />
+                        <SelectedLocation
+                              data={DataLocation}
+                              update={setSelectedLocation}
+                        />
+                        <div className="container-ZebraCopie">
+                              <h2>ZEBRA</h2>
+                              <label htmlFor="copiesZebra">
+                                    Sélectionner une impriante :
+                              </label>
+                              <select
+                                    id="selectPrintZebra"
+                                    value={copiesZebra}
+                                    onChange={handlePrintCopieZebra}
+                              >
+                                    <option value="">-- Sélectionnez --</option>
+                                    {IPZebra}
+                              </select>
+                        </div>
                         <label className="labelCss" htmlFor="sizeQrCode">
                               Entrée la taille en px de votre Qr-Code par
                               default (180px):
@@ -297,8 +357,14 @@ const Home = () => {
                               >
                                     Print
                               </button>
+                              <button
+                                    className="buttonCss" type='button'
+                                    onClick={handlePrintZebra}
+                              >
+                                    Zebra
+                              </button>
                         </div>
-                        <div container-copy>
+                        <div className="container-copy">
                               <a
                                     href="https://github.com/undarez"
                                     className="copyright"
