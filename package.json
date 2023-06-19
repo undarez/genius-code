@@ -24,8 +24,7 @@
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
-    "typescript": "^4.9.5",
-    "zebra-browser-print-wrapper": "^0.1.4"
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",

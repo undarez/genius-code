@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-//importer la function d'impression de Zebra
-import { printOnZebraPrinter } from '../../function/zebra';
+import React, { useState} from 'react';
+import undarez from '../../asset/logo-undarez.png'
 //import de la liste des adresses IP des Zebra
 import ipZebra from '../../JSON/ZebraIP.json';
 import Barcode from 'react-barcode';
@@ -12,38 +11,7 @@ import DataLocation from '../../JSON/Location.json';
 import './_home.scss';
 
 const Home = () => {
-      //useState pour le nombre de copies a imprimer sur une zebra
-      const [copiesZebra, setCopiesZebra] = useState('');
-      //ajout d'un map pour selectionner toutes les adresses IP des zebra
-      const IPZebra = ipZebra.map((printer: any) => (
-            <option key={printer.id} value={printer.ip}>
-                  {printer.name}
-            </option>
-      ));
-      //Zebra impression
-      const handlePrintZebra = async () => {
-            // Vérifier si une imprimante est sélectionnée
-            if (copiesZebra) {
-                  try {
-                        await printOnZebraPrinter(setCopiesZebra);
-
-                        // Autres actions après l'impression
-                  } catch (error) {
-                        console.log(
-                              "Erreur lors de l'impression sur l'imprimante Zebra :",
-                              error
-                        );
-                  }
-            }
-      };
-
-      const handlePrintCopieZebra = (
-            event: React.ChangeEvent<HTMLSelectElement>
-      ) => {
-            setCopiesZebra(event.target.value);
-      };
-      //fin impression zebra
-
+      
       //function telechargement qrcode
       const handleDllQrcode = (
             e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -75,7 +43,7 @@ const Home = () => {
                       padding: 0;
                     }
                     p {
-                        font-family: 'Handlee', cursive;
+                        font-family: 'Gasoek One', sans-serif;
                         color: black;
                         font-size: 22px;
                     }
@@ -120,7 +88,8 @@ const Home = () => {
                     padding: 0;
                   }
                   p {
-                        font-family: 'Handlee', cursive;
+                        font-family: 'Gasoek One', sans-serif;
+                        font-weight:800;
                         color: black;
                         font-size: 22px;
                         text-align:center;
@@ -242,20 +211,7 @@ const Home = () => {
                               data={DataLocation}
                               update={setSelectedLocation}
                         />
-                        <div className="container-ZebraCopie">
-                              <h2>ZEBRA</h2>
-                              <label htmlFor="copiesZebra">
-                                    Sélectionner une impriante :
-                              </label>
-                              <select
-                                    id="selectPrintZebra"
-                                    value={copiesZebra}
-                                    onChange={handlePrintCopieZebra}
-                              >
-                                    <option value="">-- Sélectionnez --</option>
-                                    {IPZebra}
-                              </select>
-                        </div>
+                       
                         <label className="labelCss" htmlFor="sizeQrCode">
                               Entrée la taille en px de votre Qr-Code par
                               default (180px):
@@ -357,12 +313,7 @@ const Home = () => {
                               >
                                     Print
                               </button>
-                              <button
-                                    className="buttonCss" type='button'
-                                    onClick={handlePrintZebra}
-                              >
-                                    Zebra
-                              </button>
+                            
                         </div>
                         <div className="container-copy">
                               <a
@@ -371,6 +322,7 @@ const Home = () => {
                               >
                                     &copy; 2023 CodeGénius By undarez
                               </a>
+                              <img src= {undarez} alt={'logo undarez'} />
                         </div>
                   </form>
             </div>

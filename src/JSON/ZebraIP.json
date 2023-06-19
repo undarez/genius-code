@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "name": "Reception",
-        "ip":"192.168.1.1"
+        "name": "Zebra Recep 2",
+        "ip":"10.91.18.83"
     },
     {
         "id": 2,

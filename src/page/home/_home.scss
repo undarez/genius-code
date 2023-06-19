@@ -31,15 +31,22 @@ body{
         height: auto;
         display: flex;
         align-items: center;
-    }
-    .copyright{
-        list-style: none;
-        text-decoration: none;
-        color: $color-text_black;
-        font-size: 18px;
-        font-family: $police-input;
-        font-weight: 600;
+        justify-content: center;
+        
+        .copyright{
+            list-style: none;
+            text-decoration: none;
+            color: $color-text_black;
+            font-size: 18px;
+            font-family: $police-input;
+            font-weight: 600;
+        }
 
+        img{
+            padding-left: 10px;
+            width: 60px;
+            height: auto;
+        }
     }
    
 
