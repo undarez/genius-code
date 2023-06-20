@@ -1,5 +1,6 @@
-import React, { useState} from 'react';
-import undarez from '../../asset/logo-undarez.png'
+import React, { useState } from 'react';
+
+import undarez from '../../asset/logo-undarez.png';
 //import de la liste des adresses IP des Zebra
 import ipZebra from '../../JSON/ZebraIP.json';
 import Barcode from 'react-barcode';
@@ -8,10 +9,32 @@ import SelectedLocation, {
       CR1Placement,
 } from '../../components/selectLocation/SelectedLocation';
 import DataLocation from '../../JSON/Location.json';
+import { imprimer, imprimerCodeBarre, printQrCode } from '../../function/zebra';
+
 import './_home.scss';
 
 const Home = () => {
-      
+      const QR = '123456789'; //valeur qr-code
+      //impression qrcode et codebarre zebra selon ip dans le fichier json
+      const handleImprimer = () => {
+            imprimer();
+      };
+
+      const handleImprimerCodeBarre = () => {
+            const adresseIpImprimante = '10.91.18.83'; // Remplacez par l'adresse IP réelle de l'imprimante
+            const cpcl = '! UTILITIES SETLP 7 0 15 PW 200 PRINT';
+            const printQrCodeFn = () => {
+                  const cpcl = `^XA ^FO50,50^BQN,2,4 ^FDMA,${QR}^FS ^XZ`;
+                  imprimerCodeBarre(adresseIpImprimante, cpcl);
+            };
+
+            imprimerCodeBarre(adresseIpImprimante, cpcl, printQrCodeFn);
+      };
+
+      const handleImprimerQrCode = () => {
+            printQrCode();
+      };
+
       //function telechargement qrcode
       const handleDllQrcode = (
             e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -211,7 +234,7 @@ const Home = () => {
                               data={DataLocation}
                               update={setSelectedLocation}
                         />
-                       
+
                         <label className="labelCss" htmlFor="sizeQrCode">
                               Entrée la taille en px de votre Qr-Code par
                               default (180px):
@@ -313,7 +336,15 @@ const Home = () => {
                               >
                                     Print
                               </button>
-                            
+                        </div>
+                        <div className="container-button-2">
+                              <button className="buttonCss-2" type='button'  onClick={handleImprimer}>Imprimer</button>
+                              <button className="buttonCss-2" type='button' onClick={handleImprimerCodeBarre}>
+                                    zebra Code-Barre
+                              </button>
+                              <button className="buttonCss-2" type='button' onClick={handleImprimerQrCode}>
+                                    zebra QR Code
+                              </button>
                         </div>
                         <div className="container-copy">
                               <a
@@ -322,7 +353,7 @@ const Home = () => {
                               >
                                     &copy; 2023 CodeGénius By undarez
                               </a>
-                              <img src= {undarez} alt={'logo undarez'} />
+                              <img src={undarez} alt={'logo undarez'} />
                         </div>
                   </form>
             </div>
